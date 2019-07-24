@@ -26,62 +26,28 @@ def knapSackIndex(W, wt, val, n, K):
             w = w -  wt[i - 1]
     return ix
 
+import csv
 
-val = [
-    4,
-    11,
-    21,
-    22,
-    26,
-    28,
-    29,
-    31,
-    36,
-    36,
-    39,
-    40,
-    50,
-    54,
-    54,
-    55,
-    55,
-    55,
-    56,
-    66,
-    74,
-    78,
-    108,
-    113
-]
-wt = [
-    427,
-    885,
-    1212,
-    1578,
-    1401,
-    2193,
-    2069,
-    3016,
-    2757,
-    2065,
-    3790,
-    495,
-    879,
-    4283,
-    3177,
-    4357,
-    5275,
-    3231,
-    3267,
-    4845,
-    5412,
-    7568,
-    7629,
-    8089
-] 
-xW = input('Enter your available money: ')
-W = int(xW)
-n = len(val)
-K = knapSack(W, wt, val, n)
-ix = knapSackIndex(W, wt, val, n ,K)
-print("Monthly payment reduction: ${}, by paying off loans: {}".format(K[-1][-1], str(ix)))
+minWt = int(input('Enter your minimum available money: '))
+maxWt = int(input('Enter your maximum available money: '))
+
+W = minWt
+
+wt = []
+val = []
+
+with open('loans.csv', 'r') as csv_file:
+    lines = csv_file.readlines()
+
+for line in lines:
+    line = line.rstrip('\n')
+    data = line.split(',')
+    wt.append(int(data[0]))
+    val.append(int(data[1]))
+
+while W < maxWt:
+	n = len(val)
+	K = knapSack(W, wt, val, n)
+	ix = knapSackIndex(W, wt, val, n ,K)
+	print("With a spending of ${} has a monthly payment reduction of ${}, by paying off loans: {}".format(W, K[-1][-1], str(ix)))
+	W = W + 100
